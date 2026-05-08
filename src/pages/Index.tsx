@@ -202,8 +202,22 @@ export default function Index() {
                     const ty = -Math.cos(rad) * dist
 
                     const inner = (
-                      <div className="flex flex-col items-center gap-1 select-none">
-                        <span style={{ fontSize: 30, filter: menuOpen ? "drop-shadow(0 0 6px #ef4444)" : "none", transition: "filter 0.3s" }}>🪆</span>
+                      <div className="flex flex-col items-center gap-1.5 select-none group/item">
+                        <div
+                          className="w-10 h-10 flex items-center justify-center transition-all duration-300"
+                          style={{ filter: "invert(1)" }}
+                        >
+                          <img
+                            src="https://cdn.poehali.dev/projects/6c7f18c2-1697-4011-8624-e0870f54466d/bucket/ffde2b46-a500-4b0c-9227-bfde8ee89107.png"
+                            alt={item.label}
+                            className="w-9 h-9 object-contain transition-all duration-300 group/item-hover:drop-shadow-[0_0_8px_#ef4444]"
+                            style={{
+                              filter: item.accent
+                                ? "invert(1) sepia(1) saturate(5) hue-rotate(310deg)"
+                                : "invert(1)",
+                            }}
+                          />
+                        </div>
                         <span
                           className={`text-xs font-bold whitespace-nowrap px-2 py-0.5 rounded ${item.accent ? "bg-red-500 text-white" : "bg-gray-900/90 text-white border border-gray-700"}`}
                           style={{ textShadow: "0 0 6px #000" }}
@@ -213,32 +227,20 @@ export default function Index() {
                       </div>
                     )
 
+                    const wrapClass = "absolute left-1/2 top-1/2 z-20 transition-all duration-500 [&:hover_img]:brightness-0 [&:hover_img]:[filter:invert(1)_sepia(1)_saturate(5)_hue-rotate(310deg)] [&:hover_img]:drop-shadow-[0_0_10px_#ef4444] hover:scale-125"
+                    const wrapStyle = {
+                      transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px))`,
+                      opacity: menuOpen ? 1 : 0,
+                      pointerEvents: (menuOpen ? "auto" : "none") as React.CSSProperties["pointerEvents"],
+                      transitionDelay: menuOpen ? `${i * 55}ms` : "0ms",
+                    }
+
                     return item.isLink ? (
-                      <Link
-                        key={i}
-                        to={item.to!}
-                        className="absolute left-1/2 top-1/2 z-20 transition-all duration-500 hover:scale-125"
-                        style={{
-                          transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px))`,
-                          opacity: menuOpen ? 1 : 0,
-                          pointerEvents: menuOpen ? "auto" : "none",
-                          transitionDelay: menuOpen ? `${i * 55}ms` : "0ms",
-                        }}
-                      >
+                      <Link key={i} to={item.to!} className={wrapClass} style={wrapStyle}>
                         {inner}
                       </Link>
                     ) : (
-                      <a
-                        key={i}
-                        href={item.href}
-                        className="absolute left-1/2 top-1/2 z-20 transition-all duration-500 hover:scale-125"
-                        style={{
-                          transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px))`,
-                          opacity: menuOpen ? 1 : 0,
-                          pointerEvents: menuOpen ? "auto" : "none",
-                          transitionDelay: menuOpen ? `${i * 55}ms` : "0ms",
-                        }}
-                      >
+                      <a key={i} href={item.href} className={wrapClass} style={wrapStyle}>
                         {inner}
                       </a>
                     )
