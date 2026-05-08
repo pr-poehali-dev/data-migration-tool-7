@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { Copy, Check, ArrowUp } from "lucide-react"
 import { Link } from "react-router-dom"
 
+const SERVER_ONLINE_URL = "https://functions.poehali.dev/5cdecfa0-a551-4dc9-9e05-5268a7abd407"
+
 export default function Index() {
   const [currentCommand, setCurrentCommand] = useState(0)
   const [showCursor, setShowCursor] = useState(true)
@@ -11,11 +13,30 @@ export default function Index() {
   const [isExecuting, setIsExecuting] = useState(false)
   const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>({})
   const [showScrollTop, setShowScrollTop] = useState(false)
+  const [serverOnline, setServerOnline] = useState<number | null>(null)
+  const [serverMax, setServerMax] = useState<number | null>(null)
+  const [serverReachable, setServerReachable] = useState(true)
 
   useEffect(() => {
     const onScroll = () => setShowScrollTop(window.scrollY > 400)
     window.addEventListener("scroll", onScroll)
     return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  useEffect(() => {
+    const fetchOnline = () => {
+      fetch(SERVER_ONLINE_URL)
+        .then(r => r.json())
+        .then(d => {
+          setServerOnline(d.online ?? 0)
+          setServerMax(d.max ?? 0)
+          setServerReachable(d.reachable ?? false)
+        })
+        .catch(() => setServerReachable(false))
+    }
+    fetchOnline()
+    const interval = setInterval(fetchOnline, 30000)
+    return () => clearInterval(interval)
   }, [])
 
   const copyToClipboard = async (text: string, key: string) => {
@@ -155,11 +176,11 @@ export default function Index() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const menuItems = [
-    { label: "Об игре", emoji: "🪆", to: "/about", isLink: true },
-    { label: "Список модов", emoji: "🪆", to: "/mods", isLink: true },
-    { label: "Правила", emoji: "🪆", href: "#integrations", isLink: false },
-    { label: "Как начать", emoji: "🪆", href: "#docs", isLink: false },
-    { label: "Подключиться", emoji: "🪆", to: "/connect", isLink: true, accent: true },
+    { label: "Об игре", to: "/about", isLink: true },
+    { label: "Список модов", to: "/mods", isLink: true },
+    { label: "Правила", href: "#integrations", isLink: false },
+    { label: "Регистрация", to: "/register", isLink: true },
+    { label: "Подключиться", to: "/connect", isLink: true, accent: true },
   ]
 
   return (
@@ -295,15 +316,31 @@ export default function Index() {
                 </div>
               </div>
 
-              <a href="#features" className="group relative cursor-pointer w-full sm:w-auto">
+              <Link to="/register" className="group relative cursor-pointer w-full sm:w-auto">
                 <div className="absolute inset-0 border-2 border-dashed border-gray-600 bg-gray-900/20 transition-all duration-300 group-hover:border-white group-hover:shadow-lg group-hover:shadow-white/20"></div>
                 <div className="relative border-2 border-dashed border-gray-400 bg-transparent text-white font-bold px-10 py-4 text-lg transition-all duration-300 group-hover:border-white group-hover:bg-gray-900/30 transform translate-x-1 translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0">
                   <div className="flex items-center gap-3">
                     <span className="text-gray-400">-&gt;</span>
-                    <span>О сервере</span>
+                    <span>Регистрация</span>
                   </div>
                 </div>
-              </a>
+              </Link>
+            </div>
+
+            {/* Виджет онлайна */}
+            <div className="flex items-center justify-center gap-3 mt-6">
+              <div className={`w-2 h-2 rounded-full ${serverReachable ? "bg-green-500 animate-pulse" : "bg-gray-600"}`}></div>
+              {serverOnline === null ? (
+                <span className="text-gray-600 text-sm font-mono">Подключение...</span>
+              ) : serverReachable ? (
+                <span className="text-gray-400 text-sm font-mono">
+                  онлайн: <span className="text-white font-bold">{serverOnline}</span>
+                  {serverMax ? <span className="text-gray-600"> / {serverMax}</span> : null}
+                  <span className="text-gray-600"> игроков</span>
+                </span>
+              ) : (
+                <span className="text-gray-600 text-sm font-mono">сервер недоступен</span>
+              )}
             </div>
           </div>
 

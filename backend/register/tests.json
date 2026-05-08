@@ -1,0 +1,28 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Пустые поля",
+      "method": "POST",
+      "path": "/",
+      "body": {},
+      "expectedStatus": 400,
+      "expectedBody": {"error": "Заполни все поля"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Неверный пароль",
+      "method": "POST",
+      "path": "/",
+      "body": {"username": "TestPlayer", "email": "test@test.com", "password": "abc"},
+      "expectedStatus": 400,
+      "expectedBody": {"error": "Пароль должен быть ровно 6 цифр"},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

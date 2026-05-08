@@ -9,6 +9,8 @@ import Docs from "./pages/Docs";
 import Connect from "./pages/Connect";
 import Mods from "./pages/Mods";
 import About from "./pages/About";
+import Register from "./pages/Register";
+import Confirm from "./pages/Confirm";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +27,8 @@ const App = () => (
           <Route path="/connect" element={<Connect />} />
           <Route path="/mods" element={<Mods />} />
           <Route path="/about" element={<About />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/confirm" element={<Confirm />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

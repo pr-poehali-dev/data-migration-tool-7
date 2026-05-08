@@ -1,0 +1,25 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Без токена",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 400,
+      "expectedBody": {"error": "Токен не указан"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Неверный токен",
+      "method": "GET",
+      "path": "/?token=invalid_token_123",
+      "expectedStatus": 404,
+      "bodyMatcher": "partial"
+    }
+  ]
+}
