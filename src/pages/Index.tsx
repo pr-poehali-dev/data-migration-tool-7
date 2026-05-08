@@ -208,7 +208,7 @@ export default function Index() {
                           style={{ filter: "invert(1)" }}
                         >
                           <img
-                            src="https://cdn.poehali.dev/projects/6c7f18c2-1697-4011-8624-e0870f54466d/bucket/ffde2b46-a500-4b0c-9227-bfde8ee89107.png"
+                            src="https://cdn.poehali.dev/projects/6c7f18c2-1697-4011-8624-e0870f54466d/bucket/b13d3327-364b-4e4f-82d3-af08555fca09.png"
                             alt={item.label}
                             className="w-9 h-9 object-contain transition-all duration-300 group/item-hover:drop-shadow-[0_0_8px_#ef4444]"
                             style={{
