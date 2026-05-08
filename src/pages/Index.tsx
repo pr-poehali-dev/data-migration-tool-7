@@ -244,11 +244,13 @@ export default function Index() {
                   {/* Главная матрёшка */}
                   <div className="absolute inset-0 blur-2xl bg-red-500/30 rounded-full scale-75 pointer-events-none"></div>
                   <img
-                    src="https://cdn.poehali.dev/projects/6c7f18c2-1697-4011-8624-e0870f54466d/files/631f9049-072d-4b0e-ac4e-3a26f0586ca1.jpg"
+                    src="https://cdn.poehali.dev/projects/6c7f18c2-1697-4011-8624-e0870f54466d/bucket/b13d3327-364b-4e4f-82d3-af08555fca09.png"
                     alt="Матрёшка МАТ&РЕШКА"
-                    className="relative w-48 h-48 lg:w-64 lg:h-64 object-cover rounded-none border-2 shadow-2xl shadow-red-500/30 cursor-pointer z-10 transition-all duration-300"
+                    className="relative w-48 h-48 lg:w-64 lg:h-64 object-contain cursor-pointer z-10 transition-all duration-300"
                     style={{
-                      borderColor: menuOpen ? "#ef4444" : "rgba(239,68,68,0.5)",
+                      filter: menuOpen
+                        ? "invert(1) sepia(1) saturate(5) hue-rotate(310deg) drop-shadow(0 0 20px #ef4444)"
+                        : "invert(1) drop-shadow(0 0 8px rgba(239,68,68,0.4))",
                       transform: menuOpen ? "scale(1.07)" : "scale(1)",
                     }}
                   />

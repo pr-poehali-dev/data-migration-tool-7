@@ -1,144 +1,78 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
-// Большая матрёшка 11x16
-const BIG: number[][] = [
-  [0,0,1,1,1,1,1,1,1,0,0],
-  [0,1,1,2,2,2,2,2,1,1,0],
-  [0,1,2,2,2,2,2,2,2,1,0],
-  [1,1,2,3,2,2,2,3,2,1,1],
-  [1,2,2,3,2,2,2,3,2,2,1],
-  [1,2,2,2,2,4,2,2,2,2,1],
-  [1,1,2,2,4,4,4,2,2,1,1],
-  [0,1,1,2,2,2,2,2,1,1,0],
-  [0,0,1,1,5,5,5,1,1,0,0],
-  [0,0,1,5,5,5,5,5,1,0,0],
-  [0,1,5,5,6,5,6,5,5,1,0],
-  [0,1,5,5,5,5,5,5,5,1,0],
-  [0,1,5,6,6,6,6,6,5,1,0],
-  [0,1,5,5,5,5,5,5,5,1,0],
-  [0,1,1,5,5,5,5,5,1,1,0],
-  [0,0,1,1,1,1,1,1,1,0,0],
-]
+const ICON = "https://cdn.poehali.dev/projects/6c7f18c2-1697-4011-8624-e0870f54466d/bucket/b13d3327-364b-4e4f-82d3-af08555fca09.png"
 
-// Средняя матрёшка 7x10
-const MED: number[][] = [
-  [0,1,1,1,1,1,0],
-  [1,2,2,2,2,2,1],
-  [1,2,3,2,3,2,1],
-  [1,2,2,4,2,2,1],
-  [1,1,2,2,2,1,1],
-  [0,1,5,5,5,1,0],
-  [0,1,5,6,5,1,0],
-  [0,1,5,5,5,1,0],
-  [0,1,5,5,5,1,0],
-  [0,1,1,1,1,1,0],
-]
-
-// Маленькая матрёшка 5x8
-const TINY: number[][] = [
-  [0,1,1,1,0],
-  [1,2,2,2,1],
-  [1,3,2,3,1],
-  [1,1,4,1,1],
-  [0,1,5,1,0],
-  [0,1,6,1,0],
-  [0,1,5,1,0],
-  [0,1,1,1,0],
-]
-
-const COLORS: Record<number, string> = {
-  0: "transparent",
-  1: "#7c2d12",
-  2: "#fca5a5",
-  3: "#1e3a5f",
-  4: "#ef4444",
-  5: "#dc2626",
-  6: "#facc15",
-}
-
-function PixelGrid({ grid, pixelSize }: { grid: number[][], pixelSize: number }) {
-  return (
-    <div style={{ display: "inline-block", imageRendering: "pixelated" }}>
-      {grid.map((row, y) => (
-        <div key={y} style={{ display: "flex" }}>
-          {row.map((cell, x) => (
-            <div key={x} style={{ width: pixelSize, height: pixelSize, backgroundColor: COLORS[cell] }} />
-          ))}
-        </div>
-      ))}
-    </div>
-  )
-}
-
-// Одна сцена: большая матрёшка + вылетающая из неё маленькая → летит влево/вправо
 function MatryoshkaScene({
-  popGrid,
-  popPixel,
-  flyTo,        // куда улетает по X (px)
-  trigger,      // когда начинать анимацию
+  flyTo,
+  trigger,
+  size,
+  popSize,
 }: {
-  popGrid: number[][]
-  popPixel: number
   flyTo: number
   trigger: boolean
+  size: number
+  popSize: number
 }) {
-  const BIG_PX = 8
-  const bigH = BIG.length * BIG_PX
-  const bigW = BIG[0].length * BIG_PX
-  const popH = popGrid.length * popPixel
-  const popW = popGrid[0].length * popPixel
-
-  const [popY, setPopY] = useState(bigH * 0.4)
+  const [popY, setPopY] = useState(0)
   const [popX, setPopX] = useState(0)
   const [opacity, setOpacity] = useState(0)
 
   useEffect(() => {
     if (!trigger) {
-      setPopY(bigH * 0.4)
+      setPopY(0)
       setPopX(0)
       setOpacity(0)
       return
     }
-    // появляется
     setOpacity(1)
-    // вылетает вверх
-    const t1 = setTimeout(() => setPopY(-popH - 10), 50)
-    // улетает в сторону
-    const t2 = setTimeout(() => setPopX(flyTo), 500)
-    // исчезает
-    const t3 = setTimeout(() => setOpacity(0), 900)
-
+    const t1 = setTimeout(() => setPopY(-(size * 0.8)), 50)
+    const t2 = setTimeout(() => setPopX(flyTo), 480)
+    const t3 = setTimeout(() => setOpacity(0), 860)
     return () => [t1, t2, t3].forEach(clearTimeout)
   }, [trigger])
 
   return (
-    <div style={{ position: "relative", width: bigW, height: bigH + 10, display: "inline-block" }}>
+    <div style={{ position: "relative", width: size, height: size, display: "inline-block" }}>
       {/* Большая матрёшка */}
-      <PixelGrid grid={BIG} pixelSize={BIG_PX} />
+      <img
+        src={ICON}
+        alt="матрёшка"
+        style={{
+          width: size,
+          height: size,
+          objectFit: "contain",
+          filter: "invert(1) drop-shadow(0 0 6px rgba(239,68,68,0.3))",
+          display: "block",
+        }}
+      />
 
-      {/* Вылетающая маленькая */}
-      <div
+      {/* Маленькая вылетающая */}
+      <img
+        src={ICON}
+        alt="матрёшка мини"
         style={{
           position: "absolute",
-          bottom: bigH * 0.42,
-          left: (bigW - popW) / 2 + popX,
-          top: popY,
+          width: popSize,
+          height: popSize,
+          objectFit: "contain",
+          left: (size - popSize) / 2 + popX,
+          top: size * 0.3 + popY,
           opacity,
+          filter: "invert(1) sepia(1) saturate(5) hue-rotate(310deg) drop-shadow(0 0 8px #ef4444)",
           transition: trigger
-            ? "top 0.45s cubic-bezier(0.34,1.56,0.64,1), left 0.5s ease-in 0.45s, opacity 0.3s ease 0.85s"
+            ? "top 0.43s cubic-bezier(0.34,1.56,0.64,1), left 0.45s ease-in 0.43s, opacity 0.3s ease 0.83s"
             : "none",
           zIndex: 10,
+          pointerEvents: "none",
         }}
-      >
-        <PixelGrid grid={popGrid} pixelSize={popPixel} />
-      </div>
+      />
     </div>
   )
 }
 
-const CYCLE = 5000 // полный цикл мс
-const STAGGER = 900  // задержка между матрёшками
+const CYCLE = 5000
+const STAGGER = 900
 
 export default function Mods() {
   const [tick, setTick] = useState(0)
@@ -150,7 +84,6 @@ export default function Mods() {
   }, [])
 
   useEffect(() => {
-    // запускаем по очереди: 0 → 1 → 2
     setTriggers([false, false, false])
     const t0 = setTimeout(() => setTriggers(([, b, c]) => [true, b, c]), 200)
     const t1 = setTimeout(() => setTriggers(([a, , c]) => [a, true, c]), 200 + STAGGER)
@@ -203,12 +136,9 @@ export default function Mods() {
 
           {/* Три матрёшки в ряд */}
           <div className="flex items-end justify-center gap-10 mb-14" style={{ minHeight: 160 }}>
-            {/* Левая — маленькая вылетает влево */}
-            <MatryoshkaScene popGrid={TINY} popPixel={5} flyTo={-80} trigger={triggers[0]} />
-            {/* Центральная — средняя вылетает вверх */}
-            <MatryoshkaScene popGrid={MED}  popPixel={6} flyTo={0}   trigger={triggers[1]} />
-            {/* Правая — маленькая вылетает вправо */}
-            <MatryoshkaScene popGrid={TINY} popPixel={5} flyTo={80}  trigger={triggers[2]} />
+            <MatryoshkaScene size={80}  popSize={36} flyTo={-70} trigger={triggers[0]} />
+            <MatryoshkaScene size={100} popSize={44} flyTo={0}   trigger={triggers[1]} />
+            <MatryoshkaScene size={80}  popSize={36} flyTo={70}  trigger={triggers[2]} />
           </div>
 
           <div className="text-red-400 font-mono text-sm mb-4 tracking-widest uppercase">// в разработке</div>
