@@ -181,77 +181,92 @@ export default function Index() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             {/* Matryoshka Image + hover menu */}
-            <div className="mb-8 flex justify-center">
-              <div
-                className="relative"
-                onMouseEnter={() => setMenuOpen(true)}
-                onMouseLeave={() => setMenuOpen(false)}
-              >
-                {/* Выдвигающиеся матрёшки-вкладки */}
-                {menuItems.map((item, i) => {
-                  // угол: от -70° до +70°, 5 штук
-                  const total = menuItems.length
-                  const angleMin = -70
-                  const angleMax = 70
-                  const angle = angleMin + (angleMax - angleMin) * (i / (total - 1))
-                  const rad = (angle * Math.PI) / 180
-                  const dist = menuOpen ? 130 : 0
-                  const tx = Math.sin(rad) * dist
-                  const ty = -Math.cos(rad) * dist + (menuOpen ? 0 : 0)
+            <div className="mb-2 flex justify-center">
+              {/* Подсказка над матрёшкой */}
+              <div className="flex flex-col items-center" style={{ gap: 0 }}>
+                <div
+                  className="relative"
+                  style={{ paddingTop: 160 }}
+                  onMouseEnter={() => setMenuOpen(true)}
+                  onMouseLeave={() => setMenuOpen(false)}
+                >
+                  {/* Выдвигающиеся матрёшки-вкладки */}
+                  {menuItems.map((item, i) => {
+                    const total = menuItems.length
+                    const angleMin = -70
+                    const angleMax = 70
+                    const angle = angleMin + (angleMax - angleMin) * (i / (total - 1))
+                    const rad = (angle * Math.PI) / 180
+                    const dist = menuOpen ? 140 : 0
+                    const tx = Math.sin(rad) * dist
+                    const ty = -Math.cos(rad) * dist
 
-                  const inner = (
-                    <div className="flex flex-col items-center gap-1 select-none">
-                      <span style={{ fontSize: 28 }}>🪆</span>
-                      <span
-                        className={`text-xs font-bold whitespace-nowrap px-2 py-0.5 ${item.accent ? "text-red-400" : "text-white"}`}
-                        style={{ textShadow: "0 0 8px #000, 0 0 4px #000" }}
+                    const inner = (
+                      <div className="flex flex-col items-center gap-1 select-none">
+                        <span style={{ fontSize: 30, filter: menuOpen ? "drop-shadow(0 0 6px #ef4444)" : "none", transition: "filter 0.3s" }}>🪆</span>
+                        <span
+                          className={`text-xs font-bold whitespace-nowrap px-2 py-0.5 rounded ${item.accent ? "bg-red-500 text-white" : "bg-gray-900/90 text-white border border-gray-700"}`}
+                          style={{ textShadow: "0 0 6px #000" }}
+                        >
+                          {item.label}
+                        </span>
+                      </div>
+                    )
+
+                    return item.isLink ? (
+                      <Link
+                        key={i}
+                        to={item.to!}
+                        className="absolute left-1/2 top-1/2 z-20 transition-all duration-500 hover:scale-125"
+                        style={{
+                          transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px))`,
+                          opacity: menuOpen ? 1 : 0,
+                          pointerEvents: menuOpen ? "auto" : "none",
+                          transitionDelay: menuOpen ? `${i * 55}ms` : "0ms",
+                        }}
                       >
-                        {item.label}
-                      </span>
+                        {inner}
+                      </Link>
+                    ) : (
+                      <a
+                        key={i}
+                        href={item.href}
+                        className="absolute left-1/2 top-1/2 z-20 transition-all duration-500 hover:scale-125"
+                        style={{
+                          transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px))`,
+                          opacity: menuOpen ? 1 : 0,
+                          pointerEvents: menuOpen ? "auto" : "none",
+                          transitionDelay: menuOpen ? `${i * 55}ms` : "0ms",
+                        }}
+                      >
+                        {inner}
+                      </a>
+                    )
+                  })}
+
+                  {/* Главная матрёшка */}
+                  <div className="absolute inset-0 blur-2xl bg-red-500/30 rounded-full scale-75 pointer-events-none"></div>
+                  <img
+                    src="https://cdn.poehali.dev/projects/6c7f18c2-1697-4011-8624-e0870f54466d/files/631f9049-072d-4b0e-ac4e-3a26f0586ca1.jpg"
+                    alt="Матрёшка МАТ&РЕШКА"
+                    className="relative w-48 h-48 lg:w-64 lg:h-64 object-cover rounded-none border-2 shadow-2xl shadow-red-500/30 cursor-pointer z-10 transition-all duration-300"
+                    style={{
+                      borderColor: menuOpen ? "#ef4444" : "rgba(239,68,68,0.5)",
+                      transform: menuOpen ? "scale(1.07)" : "scale(1)",
+                    }}
+                  />
+
+                  {/* Пульсирующая подсказка «наведи» */}
+                  {!menuOpen && (
+                    <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 pointer-events-none z-30">
+                      <div className="text-gray-400 text-xs font-mono animate-bounce whitespace-nowrap">наведи курсор ↑</div>
                     </div>
-                  )
-
-                  return item.isLink ? (
-                    <Link
-                      key={i}
-                      to={item.to!}
-                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-500 hover:scale-110"
-                      style={{
-                        transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px))`,
-                        opacity: menuOpen ? 1 : 0,
-                        pointerEvents: menuOpen ? "auto" : "none",
-                        transitionDelay: menuOpen ? `${i * 50}ms` : "0ms",
-                      }}
-                    >
-                      {inner}
-                    </Link>
-                  ) : (
-                    <a
-                      key={i}
-                      href={item.href}
-                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-500 hover:scale-110"
-                      style={{
-                        transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px))`,
-                        opacity: menuOpen ? 1 : 0,
-                        pointerEvents: menuOpen ? "auto" : "none",
-                        transitionDelay: menuOpen ? `${i * 50}ms` : "0ms",
-                      }}
-                    >
-                      {inner}
-                    </a>
-                  )
-                })}
-
-                {/* Главная матрёшка */}
-                <div className="absolute inset-0 blur-2xl bg-red-500/30 rounded-full scale-75 pointer-events-none"></div>
-                <img
-                  src="https://cdn.poehali.dev/projects/6c7f18c2-1697-4011-8624-e0870f54466d/files/631f9049-072d-4b0e-ac4e-3a26f0586ca1.jpg"
-                  alt="Матрёшка МАТ&РЕШКА"
-                  className="relative w-48 h-48 lg:w-64 lg:h-64 object-cover rounded-none border-2 border-red-500/50 shadow-2xl shadow-red-500/30 cursor-pointer transition-transform duration-300 hover:scale-105 z-10"
-                  style={{ position: "relative" }}
-                />
+                  )}
+                </div>
               </div>
             </div>
+            {/* отступ под подсказку */}
+            <div className="mt-12"></div>
 
             <h1 className="text-5xl lg:text-8xl font-bold mb-6 leading-tight tracking-wider">
               <span className="text-white">МАТ</span>
