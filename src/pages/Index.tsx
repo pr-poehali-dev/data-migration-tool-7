@@ -166,13 +166,6 @@ export default function Index() {
 
             <div className="hidden md:flex items-center gap-8 ml-8">
               <a
-                href="#features"
-                className="text-gray-400 hover:text-white transition-colors cursor-pointer relative group"
-              >
-                <span>О сервере</span>
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></div>
-              </a>
-              <a
                 href="#modes"
                 className="text-gray-400 hover:text-white transition-colors cursor-pointer relative group"
               >
