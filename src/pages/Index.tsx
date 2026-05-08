@@ -152,98 +152,18 @@ export default function Index() {
     }
   }, [currentCommand])
 
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  const menuItems = [
+    { label: "Об игре", emoji: "🪆", to: "/about", isLink: true },
+    { label: "Список модов", emoji: "🪆", to: "/mods", isLink: true },
+    { label: "Правила", emoji: "🪆", href: "#integrations", isLink: false },
+    { label: "Как начать", emoji: "🪆", href: "#docs", isLink: false },
+    { label: "Подключиться", emoji: "🪆", to: "/connect", isLink: true, accent: true },
+  ]
+
   return (
     <div className="min-h-screen bg-black text-white font-mono overflow-hidden relative">
-      {/* Navigation */}
-      <nav className="border-b border-gray-800 bg-gray-950/95 backdrop-blur-sm p-4 relative z-10 sticky top-0">
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-3">
-              <div className="flex gap-2">
-                <div className="w-3 h-3 bg-red-500 hover:bg-red-400 transition-colors cursor-pointer"></div>
-                <div className="w-3 h-3 bg-yellow-500 hover:bg-yellow-400 transition-colors cursor-pointer"></div>
-                <div className="w-3 h-3 bg-green-500 hover:bg-green-400 transition-colors cursor-pointer"></div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-white font-bold text-lg">МАТ</span>
-                <span className="text-red-400 font-bold text-lg">&</span>
-                <span className="text-white font-bold text-lg">РЕШКА</span>
-              </div>
-            </div>
-
-            <div className="hidden md:flex items-center gap-8 ml-8">
-              <Link
-                to="/about"
-                className="text-gray-400 hover:text-white transition-colors cursor-pointer relative group"
-              >
-                <span>Об игре</span>
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></div>
-              </Link>
-              <Link
-                to="/mods"
-                className="text-gray-400 hover:text-white transition-colors cursor-pointer relative group"
-              >
-                <span>Список модов</span>
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></div>
-              </Link>
-              <a
-                href="#integrations"
-                className="text-gray-400 hover:text-white transition-colors cursor-pointer relative group"
-              >
-                <span>Правила</span>
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></div>
-              </a>
-              <a
-                href="#docs"
-                className="text-gray-400 hover:text-white transition-colors cursor-pointer relative group"
-              >
-                <span>Как начать</span>
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></div>
-              </a>
-              <Link
-                to="/connect"
-                className="text-red-400 hover:text-red-300 transition-colors cursor-pointer relative group font-bold"
-              >
-                <span>🎮 Подключиться</span>
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-400 transition-all duration-300 group-hover:bg-red-300"></div>
-              </Link>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-2 text-gray-500 text-xs">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span>онлайн</span>
-            </div>
-
-            <div
-              className="group relative cursor-pointer"
-              onClick={() => copyToClipboard("mat-reshka.ru", "nav-install")}
-            >
-              <div className="absolute inset-0 border border-gray-600 bg-gray-900/20 transition-all duration-300 group-hover:border-red-400 group-hover:shadow-lg group-hover:shadow-red-400/20"></div>
-              <div className="relative border border-gray-400 bg-transparent text-white font-medium px-6 py-2 text-sm transition-all duration-300 group-hover:border-red-400 group-hover:bg-gray-900/30 transform translate-x-0.5 translate-y-0.5 group-hover:translate-x-0 group-hover:translate-y-0">
-                <div className="flex items-center gap-2">
-                  {copiedStates["nav-install"] ? (
-                    <Check className="w-4 h-4 text-green-400" />
-                  ) : (
-                    <Copy className="w-4 h-4 text-gray-400" />
-                  )}
-                  <span className="text-red-400">🎮</span>
-                  <span>Играть</span>
-                </div>
-              </div>
-            </div>
-
-            <button className="md:hidden text-gray-400 hover:text-white transition-colors">
-              <div className="w-6 h-6 flex flex-col justify-center gap-1">
-                <div className="w-full h-0.5 bg-current transition-all duration-300"></div>
-                <div className="w-full h-0.5 bg-current transition-all duration-300"></div>
-                <div className="w-full h-0.5 bg-current transition-all duration-300"></div>
-              </div>
-            </button>
-          </div>
-        </div>
-      </nav>
 
       {/* Matrix Background */}
       <div className="fixed inset-0 opacity-10 pointer-events-none">
@@ -260,14 +180,75 @@ export default function Index() {
       <section className="relative px-6 py-20 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            {/* Matryoshka Image */}
+            {/* Matryoshka Image + hover menu */}
             <div className="mb-8 flex justify-center">
-              <div className="relative">
-                <div className="absolute inset-0 blur-2xl bg-red-500/30 rounded-full scale-75"></div>
+              <div
+                className="relative"
+                onMouseEnter={() => setMenuOpen(true)}
+                onMouseLeave={() => setMenuOpen(false)}
+              >
+                {/* Выдвигающиеся матрёшки-вкладки */}
+                {menuItems.map((item, i) => {
+                  // угол: от -70° до +70°, 5 штук
+                  const total = menuItems.length
+                  const angleMin = -70
+                  const angleMax = 70
+                  const angle = angleMin + (angleMax - angleMin) * (i / (total - 1))
+                  const rad = (angle * Math.PI) / 180
+                  const dist = menuOpen ? 130 : 0
+                  const tx = Math.sin(rad) * dist
+                  const ty = -Math.cos(rad) * dist + (menuOpen ? 0 : 0)
+
+                  const inner = (
+                    <div className="flex flex-col items-center gap-1 select-none">
+                      <span style={{ fontSize: 28 }}>🪆</span>
+                      <span
+                        className={`text-xs font-bold whitespace-nowrap px-2 py-0.5 ${item.accent ? "text-red-400" : "text-white"}`}
+                        style={{ textShadow: "0 0 8px #000, 0 0 4px #000" }}
+                      >
+                        {item.label}
+                      </span>
+                    </div>
+                  )
+
+                  return item.isLink ? (
+                    <Link
+                      key={i}
+                      to={item.to!}
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-500 hover:scale-110"
+                      style={{
+                        transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px))`,
+                        opacity: menuOpen ? 1 : 0,
+                        pointerEvents: menuOpen ? "auto" : "none",
+                        transitionDelay: menuOpen ? `${i * 50}ms` : "0ms",
+                      }}
+                    >
+                      {inner}
+                    </Link>
+                  ) : (
+                    <a
+                      key={i}
+                      href={item.href}
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-500 hover:scale-110"
+                      style={{
+                        transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px))`,
+                        opacity: menuOpen ? 1 : 0,
+                        pointerEvents: menuOpen ? "auto" : "none",
+                        transitionDelay: menuOpen ? `${i * 50}ms` : "0ms",
+                      }}
+                    >
+                      {inner}
+                    </a>
+                  )
+                })}
+
+                {/* Главная матрёшка */}
+                <div className="absolute inset-0 blur-2xl bg-red-500/30 rounded-full scale-75 pointer-events-none"></div>
                 <img
                   src="https://cdn.poehali.dev/projects/6c7f18c2-1697-4011-8624-e0870f54466d/files/631f9049-072d-4b0e-ac4e-3a26f0586ca1.jpg"
                   alt="Матрёшка МАТ&РЕШКА"
-                  className="relative w-48 h-48 lg:w-64 lg:h-64 object-cover rounded-none border-2 border-red-500/50 shadow-2xl shadow-red-500/30"
+                  className="relative w-48 h-48 lg:w-64 lg:h-64 object-cover rounded-none border-2 border-red-500/50 shadow-2xl shadow-red-500/30 cursor-pointer transition-transform duration-300 hover:scale-105 z-10"
+                  style={{ position: "relative" }}
                 />
               </div>
             </div>
