@@ -172,13 +172,20 @@ export default function Index() {
             </div>
 
             <div className="hidden md:flex items-center gap-8 ml-8">
-              <a
-                href="#modes"
+              <Link
+                to="/about"
                 className="text-gray-400 hover:text-white transition-colors cursor-pointer relative group"
               >
-                <span>Режимы игры</span>
+                <span>Об игре</span>
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></div>
-              </a>
+              </Link>
+              <Link
+                to="/mods"
+                className="text-gray-400 hover:text-white transition-colors cursor-pointer relative group"
+              >
+                <span>Список модов</span>
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></div>
+              </Link>
               <a
                 href="#integrations"
                 className="text-gray-400 hover:text-white transition-colors cursor-pointer relative group"
