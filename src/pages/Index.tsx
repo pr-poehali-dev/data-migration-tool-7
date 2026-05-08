@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Copy, Check } from "lucide-react"
+import { Link } from "react-router-dom"
 
 export default function Index() {
   const [currentCommand, setCurrentCommand] = useState(0)
@@ -192,6 +193,13 @@ export default function Index() {
                 <span>Как начать</span>
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></div>
               </a>
+              <Link
+                to="/connect"
+                className="text-red-400 hover:text-red-300 transition-colors cursor-pointer relative group font-bold"
+              >
+                <span>🎮 Подключиться</span>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-400 transition-all duration-300 group-hover:bg-red-300"></div>
+              </Link>
             </div>
           </div>
 
