@@ -264,7 +264,7 @@ export default function Index() {
             </h1>
 
             <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto mb-8">
-              Легендарный игровой сервер. Подключайся, побеждай, становись частью клана. Нас уже тысячи — присоединяйся!
+              Матрёшка, матрёшка и ещё раз матрёшка.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
