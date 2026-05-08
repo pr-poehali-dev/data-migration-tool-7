@@ -203,21 +203,16 @@ export default function Index() {
 
                     const inner = (
                       <div className="flex flex-col items-center gap-1.5 select-none group/item">
-                        <div
-                          className="w-10 h-10 flex items-center justify-center transition-all duration-300"
-                          style={{ filter: "invert(1)" }}
-                        >
-                          <img
-                            src="https://cdn.poehali.dev/projects/6c7f18c2-1697-4011-8624-e0870f54466d/bucket/b13d3327-364b-4e4f-82d3-af08555fca09.png"
-                            alt={item.label}
-                            className="w-9 h-9 object-contain transition-all duration-300 group/item-hover:drop-shadow-[0_0_8px_#ef4444]"
-                            style={{
-                              filter: item.accent
-                                ? "invert(1) sepia(1) saturate(5) hue-rotate(310deg)"
-                                : "invert(1)",
-                            }}
-                          />
-                        </div>
+                        <img
+                          src="https://cdn.poehali.dev/projects/6c7f18c2-1697-4011-8624-e0870f54466d/bucket/b13d3327-364b-4e4f-82d3-af08555fca09.png"
+                          alt={item.label}
+                          className="w-10 h-10 object-contain transition-all duration-300"
+                          style={{
+                            filter: item.accent
+                              ? "invert(1) sepia(1) saturate(5) hue-rotate(310deg) drop-shadow(0 0 4px #ef4444)"
+                              : "invert(1)",
+                          }}
+                        />
                         <span
                           className={`text-xs font-bold whitespace-nowrap px-2 py-0.5 rounded ${item.accent ? "bg-red-500 text-white" : "bg-gray-900/90 text-white border border-gray-700"}`}
                           style={{ textShadow: "0 0 6px #000" }}
