@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { Copy, Check } from "lucide-react"
-import { Link } from "react-router-dom"
 
 export default function Index() {
   const [currentCommand, setCurrentCommand] = useState(0)
@@ -24,60 +23,53 @@ export default function Index() {
   }
 
   const commands = [
-    "flux init --ai-powered",
-    "flux generate --model gpt-5 --context full",
-    "flux review --agent claude-4 --interactive",
-    "flux deploy --env production --optimize",
+    "/server join mat-reshka",
+    "/game start --mode pvp",
+    "/shop open --category weapons",
+    "/clan create --name МАТ&РЕШКА",
   ]
 
   const terminalSequences = [
     {
-      command: "flux init --ai-powered",
+      command: "/server join mat-reshka",
       outputs: [
-        "Инициализация проекта FLUX CLI...",
-        "Установка зависимостей...",
-        "Настройка AI-моделей...",
-        "Проект успешно создан!",
+        "Подключение к серверу МАТ&РЕШКА...",
+        "Авторизация игрока...",
+        "Загрузка мира...",
+        "Добро пожаловать на сервер!",
       ],
     },
     {
-      command: "flux generate --model gpt-5 --context full",
+      command: "/game start --mode pvp",
       outputs: [
-        "Загрузка модели GPT-5...",
-        "Анализ контекста проекта...",
-        "Генерация кода...",
-        "Генерация завершена!",
+        "Инициализация PvP-режима...",
+        "Поиск противников...",
+        "Формирование команд...",
+        "Бой начался! Удачи!",
       ],
     },
     {
-      command: "flux review --agent claude-4 --interactive",
+      command: "/shop open --category weapons",
       outputs: [
-        "Запуск интерактивного ревью...",
-        "Claude-4 анализирует изменения...",
-        "Формирование рекомендаций...",
-        "Сессия ревью активна!",
+        "Открытие магазина...",
+        "Загрузка каталога оружия...",
+        "Проверка баланса...",
+        "Магазин готов к работе!",
       ],
     },
     {
-      command: "flux deploy --env production --optimize",
+      command: "/clan create --name МАТ&РЕШКА",
       outputs: [
-        "Сборка для production...",
-        "Оптимизация бандла...",
-        "Деплой на production...",
-        "Деплой завершён!",
+        "Создание клана...",
+        "Регистрация названия...",
+        "Настройка прав доступа...",
+        "Клан МАТ&РЕШКА создан!",
       ],
     },
   ]
 
-  const heroAsciiText = `███████╗██╗     ██╗   ██╗██╗  ██╗     ██████╗██╗     ██╗
-██╔════╝██║     ██║   ██║╚██╗██╔╝    ██╔════╝██║     ██║
-█████╗  ██║     ██║   ██║ ╚███╔╝     ██║     ██║     ██║
-██╔══╝  ██║     ██║   ██║ ██╔██╗     ██║     ██║     ██║
-██║     ███████╗╚██████╔╝██╔╝ ██╗    ╚██████╗███████╗██║
-╚═╝     ╚══════╝ ╚═════╝ ╚═╝  ╚═╝     ╚═════╝╚══════╝╚═╝`
-
   useEffect(() => {
-    const chars = "FLUXCLI01010101ABCDEF".split("")
+    const chars = "МАТРЕШКА01010101ABCDEF".split("")
     const newMatrixChars = Array.from({ length: 100 }, () => chars[Math.floor(Math.random() * chars.length)])
     setMatrixChars(newMatrixChars)
 
@@ -118,7 +110,7 @@ export default function Index() {
           () => {
             setIsExecuting(true)
             setCurrentTyping("")
-            setTerminalLines((prev) => [...prev, `user@dev:~/project$ ${command}`])
+            setTerminalLines((prev) => [...prev, `player@mat-reshka:~$ ${command}`])
           },
           command.length * 50 + 500,
         ),
@@ -165,8 +157,9 @@ export default function Index() {
                 <div className="w-3 h-3 bg-green-500 hover:bg-green-400 transition-colors cursor-pointer"></div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-white font-bold text-lg">FLUX</span>
-                <span className="text-gray-400 text-sm">CLI</span>
+                <span className="text-white font-bold text-lg">МАТ</span>
+                <span className="text-red-400 font-bold text-lg">&</span>
+                <span className="text-white font-bold text-lg">РЕШКА</span>
               </div>
             </div>
 
@@ -175,53 +168,53 @@ export default function Index() {
                 href="#features"
                 className="text-gray-400 hover:text-white transition-colors cursor-pointer relative group"
               >
-                <span>Возможности</span>
+                <span>О сервере</span>
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></div>
               </a>
               <a
-                href="#models"
+                href="#modes"
                 className="text-gray-400 hover:text-white transition-colors cursor-pointer relative group"
               >
-                <span>AI-модели</span>
+                <span>Режимы игры</span>
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></div>
               </a>
               <a
                 href="#integrations"
                 className="text-gray-400 hover:text-white transition-colors cursor-pointer relative group"
               >
-                <span>Интеграции</span>
+                <span>Правила</span>
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></div>
               </a>
-              <Link
-                to="/docs"
+              <a
+                href="#docs"
                 className="text-gray-400 hover:text-white transition-colors cursor-pointer relative group"
               >
-                <span>Документация</span>
+                <span>Как начать</span>
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></div>
-              </Link>
+              </a>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center gap-2 text-gray-500 text-xs">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span>v2.1.0</span>
+              <span>онлайн</span>
             </div>
 
             <div
               className="group relative cursor-pointer"
-              onClick={() => copyToClipboard("npm install -g flux-cli", "nav-install")}
+              onClick={() => copyToClipboard("mat-reshka.ru", "nav-install")}
             >
-              <div className="absolute inset-0 border border-gray-600 bg-gray-900/20 transition-all duration-300 group-hover:border-white group-hover:shadow-lg group-hover:shadow-white/20"></div>
-              <div className="relative border border-gray-400 bg-transparent text-white font-medium px-6 py-2 text-sm transition-all duration-300 group-hover:border-white group-hover:bg-gray-900/30 transform translate-x-0.5 translate-y-0.5 group-hover:translate-x-0 group-hover:translate-y-0">
+              <div className="absolute inset-0 border border-gray-600 bg-gray-900/20 transition-all duration-300 group-hover:border-red-400 group-hover:shadow-lg group-hover:shadow-red-400/20"></div>
+              <div className="relative border border-gray-400 bg-transparent text-white font-medium px-6 py-2 text-sm transition-all duration-300 group-hover:border-red-400 group-hover:bg-gray-900/30 transform translate-x-0.5 translate-y-0.5 group-hover:translate-x-0 group-hover:translate-y-0">
                 <div className="flex items-center gap-2">
                   {copiedStates["nav-install"] ? (
                     <Check className="w-4 h-4 text-green-400" />
                   ) : (
                     <Copy className="w-4 h-4 text-gray-400" />
                   )}
-                  <span className="text-gray-400">$</span>
-                  <span>Установить</span>
+                  <span className="text-red-400">🎮</span>
+                  <span>Играть</span>
                 </div>
               </div>
             </div>
@@ -241,7 +234,7 @@ export default function Index() {
       <div className="fixed inset-0 opacity-10 pointer-events-none">
         <div className="grid grid-cols-25 gap-1 h-full">
           {matrixChars.map((char, i) => (
-            <div key={i} className="text-gray-500 text-xs animate-pulse">
+            <div key={i} className="text-red-500 text-xs animate-pulse">
               {char}
             </div>
           ))}
@@ -252,49 +245,55 @@ export default function Index() {
       <section className="relative px-6 py-20 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <div className="mb-8">
-              <pre className="text-white text-lg lg:text-xl font-bold leading-none inline-block">{heroAsciiText}</pre>
+            {/* Matryoshka Image */}
+            <div className="mb-8 flex justify-center">
+              <div className="relative">
+                <div className="absolute inset-0 blur-2xl bg-red-500/30 rounded-full scale-75"></div>
+                <img
+                  src="https://cdn.poehali.dev/projects/6c7f18c2-1697-4011-8624-e0870f54466d/files/631f9049-072d-4b0e-ac4e-3a26f0586ca1.jpg"
+                  alt="Матрёшка МАТ&РЕШКА"
+                  className="relative w-48 h-48 lg:w-64 lg:h-64 object-cover rounded-none border-2 border-red-500/50 shadow-2xl shadow-red-500/30"
+                />
+              </div>
             </div>
 
-            <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
-              Создан, чтобы помочь вам <span className="text-gray-400 animate-pulse">деплоить</span>,
-              <br />
-              прямо из{" "}
-              <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">терминала</span>.
+            <h1 className="text-5xl lg:text-8xl font-bold mb-6 leading-tight tracking-wider">
+              <span className="text-white">МАТ</span>
+              <span className="text-red-400">&</span>
+              <span className="text-white">РЕШКА</span>
             </h1>
 
             <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto mb-8">
-              Используйте в IDE или любом терминале. Одни команды, любое окружение. Интегрируется в любой рабочий процесс. Полный контроль из терминала.
+              Легендарный игровой сервер. Подключайся, побеждай, становись частью клана. Нас уже тысячи — присоединяйся!
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <div
                 className="group relative cursor-pointer w-full sm:w-auto"
-                onClick={() => copyToClipboard("npm install -g flux-cli", "hero-install")}
+                onClick={() => copyToClipboard("mat-reshka.ru", "hero-install")}
               >
-                <div className="absolute inset-0 border border-gray-600 bg-gray-900/20 transition-all duration-300 group-hover:border-white group-hover:shadow-lg group-hover:shadow-white/20"></div>
-                <div className="relative border border-white bg-white text-black font-bold px-6 sm:px-10 py-4 text-base sm:text-lg transition-all duration-300 group-hover:bg-gray-100 group-hover:text-black transform translate-x-1 translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0 text-center">
+                <div className="absolute inset-0 border border-red-600 bg-red-900/20 transition-all duration-300 group-hover:border-red-400 group-hover:shadow-lg group-hover:shadow-red-400/30"></div>
+                <div className="relative border border-red-400 bg-red-500 text-white font-bold px-6 sm:px-10 py-4 text-base sm:text-lg transition-all duration-300 group-hover:bg-red-400 transform translate-x-1 translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0 text-center">
                   <div className="flex items-center justify-center gap-2 sm:gap-3">
                     {copiedStates["hero-install"] ? (
-                      <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+                      <Check className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                     ) : (
-                      <Copy className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+                      <Copy className="w-4 h-4 sm:w-5 sm:h-5 text-white/80" />
                     )}
-                    <span className="text-gray-600 text-sm sm:text-base">$</span>
-                    <span className="text-sm sm:text-base">npm install -g flux-cli</span>
+                    <span className="text-sm sm:text-base">mat-reshka.ru</span>
                   </div>
                 </div>
               </div>
 
-              <Link to="/docs" className="group relative cursor-pointer w-full sm:w-auto">
+              <a href="#features" className="group relative cursor-pointer w-full sm:w-auto">
                 <div className="absolute inset-0 border-2 border-dashed border-gray-600 bg-gray-900/20 transition-all duration-300 group-hover:border-white group-hover:shadow-lg group-hover:shadow-white/20"></div>
                 <div className="relative border-2 border-dashed border-gray-400 bg-transparent text-white font-bold px-10 py-4 text-lg transition-all duration-300 group-hover:border-white group-hover:bg-gray-900/30 transform translate-x-1 translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0">
                   <div className="flex items-center gap-3">
                     <span className="text-gray-400">-&gt;</span>
-                    <span>Документация</span>
+                    <span>О сервере</span>
                   </div>
                 </div>
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -308,69 +307,30 @@ export default function Index() {
                     <div className="w-3 h-3 bg-yellow-500 hover:bg-yellow-400 transition-colors cursor-pointer"></div>
                     <div className="w-3 h-3 bg-green-500 hover:bg-green-400 transition-colors cursor-pointer"></div>
                   </div>
-                  <span className="text-gray-400 text-sm">flux-terminal</span>
+                  <span className="text-gray-400 text-sm">mat-reshka — терминал</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-gray-500 text-xs">LIVE</span>
+                  <span className="text-gray-500 text-xs">СЕРВЕР ОНЛАЙН</span>
                 </div>
               </div>
 
-              <div className="p-6 min-h-[300px] bg-black">
-                <div className="space-y-2 text-sm">
+              <div className="p-6 bg-black min-h-48">
+                <div className="space-y-2 font-mono text-sm">
                   {terminalLines.map((line, index) => (
                     <div
                       key={index}
-                      className={`${line.startsWith("user@dev") ? "text-white" : "text-gray-300"} ${line.includes("успешно") || line.includes("завершен") || line.includes("активна") ? "text-green-400" : ""}`}
+                      className={`${line.startsWith("player@") ? "text-red-400" : "text-green-400"}`}
                     >
-                      {line}
+                      {line.startsWith("player@") ? line : `  > ${line}`}
                     </div>
                   ))}
-
-                  {!isExecuting && (
-                    <div className="text-white">
-                      <span className="text-green-400">user@dev</span>
-                      <span className="text-gray-500">:</span>
-                      <span className="text-blue-400">~/project</span>
-                      <span className="text-white">$ </span>
-                      <span className="text-white">{currentTyping}</span>
-                      <span className={`text-white ${showCursor ? "opacity-100" : "opacity-0"} transition-opacity`}>
-                        |
-                      </span>
-                    </div>
-                  )}
-
-                  {isExecuting && (
-                    <div className="flex items-center gap-2 text-gray-400">
-                      <div className="flex gap-1">
-                        <div className="w-1 h-1 bg-gray-400 rounded-full animate-bounce"></div>
-                        <div
-                          className="w-1 h-1 bg-gray-400 rounded-full animate-bounce"
-                          style={{ animationDelay: "0.1s" }}
-                        ></div>
-                        <div
-                          className="w-1 h-1 bg-gray-400 rounded-full animate-bounce"
-                          style={{ animationDelay: "0.2s" }}
-                        ></div>
-                      </div>
-                      <span className="text-xs">Выполняется...</span>
-                    </div>
-                  )}
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-gray-800 flex justify-between text-xs text-gray-500">
-                  <div className="flex items-center gap-4">
-                    <span className="text-gray-500">Команд выполнено:</span>
-                    <span className="text-white">{currentCommand + 1}</span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-gray-500">AI-модели:</span>
-                    <span className="text-gray-500">Активны</span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-gray-500">Статус:</span>
-                    <span className="text-gray-500">{isExecuting ? "Работает" : "Готов"}</span>
-                  </div>
+                <div className="flex items-center gap-2 font-mono text-sm mt-2">
+                  <span className="text-red-400">player@mat-reshka:~$</span>
+                  <span className="text-white">{currentTyping}</span>
+                  {showCursor && <span className="text-white animate-pulse">█</span>}
                 </div>
               </div>
             </div>
@@ -378,102 +338,75 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Integrations Section */}
-      <section className="px-6 py-16 lg:px-12 border-t border-gray-800" id="integrations">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Поддержка всех IDE</h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              FLUX CLI работает везде. Одна установка, безграничные возможности.
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gray-950 border border-gray-800 shadow-xl">
-              <div className="flex items-center justify-between px-6 py-3 bg-gray-900 border-b border-gray-700">
-                <div className="flex items-center gap-3">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 bg-red-500"></div>
-                    <div className="w-3 h-3 bg-yellow-500"></div>
-                    <div className="w-3 h-3 bg-green-500"></div>
-                  </div>
-                  <span className="text-gray-400 text-sm">flux ide --list</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-gray-500 text-xs">ВСЕ ПОДДЕРЖИВАЮТСЯ</span>
-                </div>
-              </div>
-
-              <div className="p-6 bg-black">
-                <div className="text-sm text-gray-400 mb-4">$ flux ide --scan</div>
-
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 font-mono text-sm mb-6">
-                  {[
-                    { name: "cursor", status: "v", desc: "AI-редактор" },
-                    { name: "vscode", status: "v", desc: "Microsoft VS Code" },
-                    { name: "jetbrains", status: "v", desc: "Семейство IntelliJ" },
-                    { name: "android-studio", status: "v", desc: "Android-разработка" },
-                    { name: "vim/neovim", status: "v", desc: "Терминальные редакторы" },
-                    { name: "intellij", status: "v", desc: "Java-разработка" },
-                  ].map((ide) => (
-                    <div
-                      key={ide.name}
-                      className="flex items-center justify-between py-2 px-3 hover:bg-gray-900 cursor-pointer group transition-all duration-200 border border-transparent hover:border-gray-700"
-                    >
-                      <div className="flex items-center gap-3">
-                        <span className="text-green-400 group-hover:text-white transition-colors w-4">
-                          {ide.status}
-                        </span>
-                        <span className="text-white group-hover:text-gray-200 transition-colors">{ide.name}</span>
-                      </div>
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity text-gray-500 text-xs">
-                        {ide.desc}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="pt-4 border-t border-gray-800">
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div className="text-sm text-gray-400">
-                      <div className="font-mono text-xs text-gray-500 space-y-1">
-                        <div>$ flux ide --install-all # Настроить все IDE</div>
-                        <div>$ flux ide --status # Проверить интеграцию</div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-4 text-xs text-gray-500">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        <span>6 активно</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                        <span>Без настройки</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-4 text-center">
-              <div className="inline-flex items-center gap-2 text-gray-400 text-sm">
-                <span className="text-green-400">*</span>
-                <span>Универсальная совместимость - Мгновенная настройка - Работает везде</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Models Section */}
-      <section className="px-6 py-20 lg:px-12 border-t border-gray-800" id="models">
+      {/* Features Section */}
+      <section className="px-6 py-20 lg:px-12 border-t border-gray-800" id="features">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6">Новейшие AI-модели</h2>
-            <p className="text-xl text-gray-400">Выбирайте AI-модель прямо из терминала</p>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6">Почему МАТ&РЕШКА?</h2>
+            <p className="text-xl text-gray-400">Всё что нужно для настоящей игры — в одном месте</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: "🗡️",
+                title: "PvP-арены",
+                desc: "Сражайся с игроками со всего сервера в честных боях один на один или командами.",
+                cmd: "/pvp join",
+              },
+              {
+                icon: "🏰",
+                title: "Защита территории",
+                desc: "Стройте базы, укрепляйте замки и защищайте свои владения от нашествий.",
+                cmd: "/claim land",
+              },
+              {
+                icon: "💎",
+                title: "Экономика",
+                desc: "Торгуйте ресурсами, открывайте магазины и становитесь богатейшим кланом.",
+                cmd: "/shop create",
+              },
+              {
+                icon: "⚔️",
+                title: "Клановые войны",
+                desc: "Создавай кланы, захватывай территории и веди эпические войны за господство.",
+                cmd: "/clan war",
+              },
+              {
+                icon: "🎁",
+                title: "Ежедневные события",
+                desc: "Боссы, турниры, ивенты каждый день — скучать не придётся.",
+                cmd: "/event list",
+              },
+              {
+                icon: "🛡️",
+                title: "Античит",
+                desc: "Справедливая игра гарантирована. Нарушителей блокируем мгновенно.",
+                cmd: "/report player",
+              },
+            ].map((feature, index) => (
+              <div key={index} className="group relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 transform rotate-1 group-hover:rotate-2 transition-transform duration-300"></div>
+                <div className="relative bg-black border border-gray-700 p-6 hover:border-red-500/50 transition-all duration-300 group-hover:shadow-xl group-hover:shadow-red-500/10">
+                  <div className="text-4xl mb-4">{feature.icon}</div>
+                  <h3 className="text-lg font-bold mb-3 text-white">{feature.title}</h3>
+                  <p className="text-gray-400 mb-4 text-sm leading-relaxed">{feature.desc}</p>
+                  <div className="bg-gray-900 border border-gray-700 p-2 font-mono text-xs text-gray-400 group-hover:border-gray-500 transition-colors">
+                    <span className="text-red-400">$ </span>{feature.cmd}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Game Modes Section */}
+      <section className="px-6 py-20 lg:px-12 border-t border-gray-800" id="modes">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6">Режимы игры</h2>
+            <p className="text-xl text-gray-400">Выбери свой стиль — у нас есть всё</p>
           </div>
 
           <div className="max-w-4xl mx-auto">
@@ -485,40 +418,39 @@ export default function Index() {
                     <div className="w-3 h-3 bg-yellow-500"></div>
                     <div className="w-3 h-3 bg-green-500"></div>
                   </div>
-                  <span className="text-gray-400 text-sm">flux model select</span>
+                  <span className="text-gray-400 text-sm">/game --list</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-gray-500 text-xs">6 ДОСТУПНО</span>
+                  <span className="text-gray-500 text-xs">5 РЕЖИМОВ</span>
                 </div>
               </div>
 
               <div className="p-6 bg-black">
-                <div className="text-sm text-gray-400 mb-4">$ flux model --list</div>
+                <div className="text-sm text-gray-400 mb-4">$ /game list --all</div>
 
                 <div className="space-y-2 font-mono text-sm">
                   {[
-                    { id: "1", name: "gpt-5", provider: "openai", status: "*", color: "text-green-400" },
-                    { id: "2", name: "claude-4-sonnet", provider: "anthropic", status: "*", color: "text-green-400" },
-                    { id: "3", name: "claude-4.1-opus", provider: "anthropic", status: "*", color: "text-green-400" },
-                    { id: "4", name: "o3", provider: "openai", status: "*", color: "text-green-400" },
-                    { id: "5", name: "gemini-2.5-pro", provider: "google", status: "*", color: "text-green-400" },
-                    { id: "6", name: "grok-4", provider: "xai", status: "*", color: "text-green-400" },
-                  ].map((model) => (
+                    { id: "1", name: "Выживание", tag: "survival", status: "★", color: "text-yellow-400" },
+                    { id: "2", name: "PvP-арена", tag: "pvp", status: "★", color: "text-red-400" },
+                    { id: "3", name: "Мини-игры", tag: "minigames", status: "★", color: "text-green-400" },
+                    { id: "4", name: "Ролевая игра", tag: "rpg", status: "★", color: "text-purple-400" },
+                    { id: "5", name: "Творческий", tag: "creative", status: "★", color: "text-blue-400" },
+                  ].map((mode) => (
                     <div
-                      key={model.id}
+                      key={mode.id}
                       className="flex items-center justify-between py-2 px-4 hover:bg-gray-900 cursor-pointer group transition-all duration-200 border border-transparent hover:border-gray-700"
                     >
                       <div className="flex items-center gap-4">
-                        <span className="text-gray-500 w-6">[{model.id}]</span>
-                        <span className={`${model.color} group-hover:text-white transition-colors`}>
-                          {model.status}
+                        <span className="text-gray-500 w-6">[{mode.id}]</span>
+                        <span className={`${mode.color} group-hover:text-white transition-colors`}>
+                          {mode.status}
                         </span>
-                        <span className="text-white group-hover:text-gray-200 transition-colors">{model.name}</span>
-                        <span className="text-gray-500 text-xs">({model.provider})</span>
+                        <span className="text-white group-hover:text-gray-200 transition-colors">{mode.name}</span>
+                        <span className="text-gray-500 text-xs">({mode.tag})</span>
                       </div>
                       <div className="opacity-0 group-hover:opacity-100 transition-opacity text-gray-500 text-xs">
-                        Нажмите {model.id} для выбора
+                        /game join {mode.tag}
                       </div>
                     </div>
                   ))}
@@ -527,26 +459,22 @@ export default function Index() {
                 <div className="mt-6 pt-4 border-t border-gray-800">
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div className="text-sm text-gray-400">
-                      <div className="mb-2">Использование:</div>
+                      <div className="mb-2">Как играть:</div>
                       <div className="font-mono text-xs text-gray-500 space-y-1">
-                        <div>$ flux generate --model gpt-5 "Создать React-компонент"</div>
-                        <div>$ flux model set claude-4-sonnet # По умолчанию</div>
-                        <div>$ flux model status # Проверить модели</div>
+                        <div>$ /game join survival # Зайти в выживание</div>
+                        <div>$ /game join pvp # Войти в PvP-арену</div>
+                        <div>$ /spawn # Вернуться на спавн</div>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-6 text-xs text-gray-500">
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        <span>4 активно</span>
+                        <span>5 активно</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                        <span>2 ожидают</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse"></div>
-                        <span>Авто-синхронизация</span>
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <span>24/7 онлайн</span>
                       </div>
                     </div>
                   </div>
@@ -554,10 +482,98 @@ export default function Index() {
               </div>
             </div>
 
-            <div className="mt-6 text-center">
+            <div className="mt-4 text-center">
               <div className="inline-flex items-center gap-2 text-gray-400 text-sm">
-                <span className="text-green-400">*</span>
-                <span>Модели обновляются автоматически - Настройка не требуется</span>
+                <span className="text-red-400">*</span>
+                <span>Все режимы доступны сразу — Без платного доступа — Играй везде</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Rules Section */}
+      <section className="px-6 py-20 lg:px-12 border-t border-gray-800" id="integrations">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6">Правила сервера</h2>
+            <p className="text-xl text-gray-400">Честная игра — основа нашего сервера</p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gray-950 border border-gray-800 shadow-2xl">
+              <div className="flex items-center justify-between px-6 py-4 bg-gray-900 border-b border-gray-700">
+                <div className="flex items-center gap-3">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 bg-red-500"></div>
+                    <div className="w-3 h-3 bg-yellow-500"></div>
+                    <div className="w-3 h-3 bg-green-500"></div>
+                  </div>
+                  <span className="text-gray-400 text-sm">/rules --list</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="text-gray-500 text-xs">ОБЯЗАТЕЛЬНО К ПРОЧТЕНИЮ</span>
+                </div>
+              </div>
+
+              <div className="p-6 bg-black">
+                <div className="text-sm text-gray-400 mb-4">$ /rules show</div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-sm mb-6">
+                  {[
+                    { rule: "Без читов и багоюза", status: "✓", desc: "Банан навсегда" },
+                    { rule: "Уважай игроков", status: "✓", desc: "Без оскорблений" },
+                    { rule: "Без гриферства", status: "✓", desc: "Порча чужого имущества" },
+                    { rule: "Честная игра", status: "✓", desc: "Запрещён дюп предметов" },
+                    { rule: "Без спама в чате", status: "✓", desc: "Мут за нарушение" },
+                    { rule: "Слушай модераторов", status: "✓", desc: "Их решение финальное" },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-between py-2 px-3 hover:bg-gray-900 cursor-pointer group transition-all duration-200 border border-transparent hover:border-gray-700"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="text-green-400 group-hover:text-white transition-colors w-4">
+                          {item.status}
+                        </span>
+                        <span className="text-white group-hover:text-gray-200 transition-colors">{item.rule}</span>
+                      </div>
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity text-gray-500 text-xs">
+                        {item.desc}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-4 border-t border-gray-800">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div className="text-sm text-gray-400">
+                      <div className="font-mono text-xs text-gray-500 space-y-1">
+                        <div>$ /report [игрок] # Пожаловаться на нарушителя</div>
+                        <div>$ /helpop [сообщение] # Позвать модератора</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span>6 правил</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <span>Мод онлайн 24/7</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 text-center">
+              <div className="inline-flex items-center gap-2 text-gray-400 text-sm">
+                <span className="text-red-400">*</span>
+                <span>Справедливая игра - Активная модерация - Дружное сообщество</span>
               </div>
             </div>
           </div>
@@ -568,35 +584,35 @@ export default function Index() {
       <section className="px-6 py-20 lg:px-12 border-t border-gray-800 bg-gray-950/30" id="docs">
         <div className="max-w-5xl mx-auto text-center">
           <div className="mb-12">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6">Готовы ускориться?</h2>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6">Готов играть?</h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Пишите мощные скрипты и автоматизации. Автоматически обновляйте документацию, запускайте проверки безопасности или создавайте собственных AI-агентов.
+              Подключайся прямо сейчас — скопируй адрес сервера и вступай в игру. Тысячи игроков ждут тебя на полях МАТ&РЕШКА.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
             <div className="group relative h-full">
               <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 transform rotate-1 group-hover:rotate-2 transition-transform duration-300"></div>
-              <div className="relative bg-black border border-gray-700 p-6 h-full flex flex-col justify-between hover:border-white transition-all duration-300 group-hover:shadow-xl group-hover:shadow-white/10 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.02)_0%,transparent_50%)] bg-[length:4px_4px]">
+              <div className="relative bg-black border border-gray-700 p-6 h-full flex flex-col justify-between hover:border-red-500/50 transition-all duration-300 group-hover:shadow-xl group-hover:shadow-red-500/10">
                 <div className="text-center flex-1 flex flex-col justify-between">
                   <div>
-                    <div className="w-12 h-12 mx-auto mb-4 bg-gray-900 border border-gray-600 flex items-center justify-center group-hover:border-white transition-colors group-hover:bg-gray-800">
+                    <div className="w-12 h-12 mx-auto mb-4 bg-gray-900 border border-gray-600 flex items-center justify-center group-hover:border-red-500/50 transition-colors group-hover:bg-gray-800">
                       <span className="text-lg font-mono text-white group-hover:text-gray-100">01</span>
                     </div>
-                    <h3 className="text-lg font-bold mb-3 text-white group-hover:text-gray-100">Инициализация</h3>
+                    <h3 className="text-lg font-bold mb-3 text-white group-hover:text-gray-100">Скопируй адрес</h3>
                     <p className="text-gray-400 mb-4 group-hover:text-gray-300 text-sm leading-relaxed">
-                      Создавайте AI-проекты без настройки
+                      Скопируй IP сервера в один клик
                     </p>
                   </div>
                   <div
                     className="bg-gray-900 border border-gray-700 p-2.5 font-mono text-xs text-left group-hover:border-gray-500 transition-colors group-hover:bg-gray-800 cursor-pointer flex items-center justify-between"
-                    onClick={() => copyToClipboard("flux init", "init-cmd")}
+                    onClick={() => copyToClipboard("mat-reshka.ru", "step1-cmd")}
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-500">$ </span>
-                      <span className="text-white group-hover:text-gray-100">flux init</span>
+                      <span className="text-red-400">$ </span>
+                      <span className="text-white group-hover:text-gray-100">mat-reshka.ru</span>
                     </div>
-                    {copiedStates["init-cmd"] ? (
+                    {copiedStates["step1-cmd"] ? (
                       <Check className="w-3 h-3 text-green-400" />
                     ) : (
                       <Copy className="w-3 h-3 text-gray-400 hover:text-white transition-colors" />
@@ -608,26 +624,26 @@ export default function Index() {
 
             <div className="group relative h-full">
               <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 transform -rotate-1 group-hover:-rotate-2 transition-transform duration-300"></div>
-              <div className="relative bg-black border border-gray-700 p-6 h-full flex flex-col justify-between hover:border-white transition-all duration-300 group-hover:shadow-xl group-hover:shadow-white/10 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.02)_0%,transparent_50%)] bg-[length:4px_4px]">
+              <div className="relative bg-black border border-gray-700 p-6 h-full flex flex-col justify-between hover:border-red-500/50 transition-all duration-300 group-hover:shadow-xl group-hover:shadow-red-500/10">
                 <div className="text-center flex-1 flex flex-col justify-between">
                   <div>
-                    <div className="w-12 h-12 mx-auto mb-4 bg-gray-900 border border-gray-600 flex items-center justify-center group-hover:border-white transition-colors group-hover:bg-gray-800">
+                    <div className="w-12 h-12 mx-auto mb-4 bg-gray-900 border border-gray-600 flex items-center justify-center group-hover:border-red-500/50 transition-colors group-hover:bg-gray-800">
                       <span className="text-lg font-mono text-white group-hover:text-gray-100">02</span>
                     </div>
-                    <h3 className="text-lg font-bold mb-3 text-white group-hover:text-gray-100">Генерация</h3>
+                    <h3 className="text-lg font-bold mb-3 text-white group-hover:text-gray-100">Запусти игру</h3>
                     <p className="text-gray-400 mb-4 group-hover:text-gray-300 text-sm leading-relaxed">
-                      Создавайте код с новейшими AI-моделями
+                      Зайди в многопользовательский режим
                     </p>
                   </div>
                   <div
                     className="bg-gray-900 border border-gray-700 p-2.5 font-mono text-xs text-left group-hover:border-gray-500 transition-colors group-hover:bg-gray-800 cursor-pointer flex items-center justify-between"
-                    onClick={() => copyToClipboard("flux generate", "generate-cmd")}
+                    onClick={() => copyToClipboard("/server add МАТ&РЕШКА mat-reshka.ru", "step2-cmd")}
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-500">$ </span>
-                      <span className="text-white group-hover:text-gray-100">flux generate</span>
+                      <span className="text-red-400">$ </span>
+                      <span className="text-white group-hover:text-gray-100">/server add МАТ&РЕШКА</span>
                     </div>
-                    {copiedStates["generate-cmd"] ? (
+                    {copiedStates["step2-cmd"] ? (
                       <Check className="w-3 h-3 text-green-400" />
                     ) : (
                       <Copy className="w-3 h-3 text-gray-400 hover:text-white transition-colors" />
@@ -639,26 +655,26 @@ export default function Index() {
 
             <div className="group relative h-full md:col-span-2 lg:col-span-1">
               <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 transform rotate-1 group-hover:rotate-2 transition-transform duration-300"></div>
-              <div className="relative bg-black border border-gray-700 p-6 h-full flex flex-col justify-between hover:border-white transition-all duration-300 group-hover:shadow-xl group-hover:shadow-white/10 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.02)_0%,transparent_50%)] bg-[length:4px_4px]">
+              <div className="relative bg-black border border-gray-700 p-6 h-full flex flex-col justify-between hover:border-red-500/50 transition-all duration-300 group-hover:shadow-xl group-hover:shadow-red-500/10">
                 <div className="text-center flex-1 flex flex-col justify-between">
                   <div>
-                    <div className="w-12 h-12 mx-auto mb-4 bg-gray-900 border border-gray-600 flex items-center justify-center group-hover:border-white transition-colors group-hover:bg-gray-800">
+                    <div className="w-12 h-12 mx-auto mb-4 bg-gray-900 border border-gray-600 flex items-center justify-center group-hover:border-red-500/50 transition-colors group-hover:bg-gray-800">
                       <span className="text-lg font-mono text-white group-hover:text-gray-100">03</span>
                     </div>
-                    <h3 className="text-lg font-bold mb-3 text-white group-hover:text-gray-100">Деплой</h3>
+                    <h3 className="text-lg font-bold mb-3 text-white group-hover:text-gray-100">Начни играть</h3>
                     <p className="text-gray-400 mb-4 group-hover:text-gray-300 text-sm leading-relaxed">
-                      Выкатывайте в production с авто-оптимизацией
+                      Подключайся и врывайся в бой!
                     </p>
                   </div>
                   <div
                     className="bg-gray-900 border border-gray-700 p-2.5 font-mono text-xs text-left group-hover:border-gray-500 transition-colors group-hover:bg-gray-800 cursor-pointer flex items-center justify-between"
-                    onClick={() => copyToClipboard("flux deploy", "deploy-cmd")}
+                    onClick={() => copyToClipboard("/pvp join", "step3-cmd")}
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-500">$ </span>
-                      <span className="text-white group-hover:text-gray-100">flux deploy</span>
+                      <span className="text-red-400">$ </span>
+                      <span className="text-white group-hover:text-gray-100">/pvp join</span>
                     </div>
-                    {copiedStates["deploy-cmd"] ? (
+                    {copiedStates["step3-cmd"] ? (
                       <Check className="w-3 h-3 text-green-400" />
                     ) : (
                       <Copy className="w-3 h-3 text-gray-400 hover:text-white transition-colors" />
@@ -670,37 +686,74 @@ export default function Index() {
           </div>
 
           <div className="space-y-6">
-            <Link to="/docs" className="group relative cursor-pointer inline-block w-full sm:w-auto">
-              <div className="absolute inset-0 border-2 border-gray-600 bg-gray-900/20 transition-all duration-300 group-hover:border-white group-hover:shadow-lg group-hover:shadow-white/20"></div>
-              <div className="relative border-2 border-white bg-white text-black font-bold px-8 sm:px-16 py-4 sm:py-5 text-lg sm:text-xl transition-all duration-300 group-hover:bg-gray-100 group-hover:text-black transform translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 text-center">
+            <div
+              className="group relative cursor-pointer inline-block w-full sm:w-auto"
+              onClick={() => copyToClipboard("mat-reshka.ru", "bottom-install")}
+            >
+              <div className="absolute inset-0 border-2 border-red-600 bg-red-900/20 transition-all duration-300 group-hover:border-red-400 group-hover:shadow-lg group-hover:shadow-red-400/30"></div>
+              <div className="relative border-2 border-red-400 bg-red-500 text-white font-bold px-8 sm:px-16 py-4 sm:py-5 text-lg sm:text-xl transition-all duration-300 group-hover:bg-red-400 transform translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 text-center">
                 <div className="flex items-center justify-center gap-2 sm:gap-3">
-                  <span className="text-gray-600 text-base sm:text-lg">&gt;</span>
-                  <span className="text-base sm:text-lg">Начать сейчас</span>
+                  {copiedStates["bottom-install"] ? (
+                    <Check className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  ) : (
+                    <Copy className="w-5 h-5 sm:w-6 sm:h-6 text-white/80" />
+                  )}
+                  <span className="text-base sm:text-lg">Скопировать IP: mat-reshka.ru</span>
                 </div>
               </div>
-            </Link>
+            </div>
 
-            <div
-              className="text-gray-400 text-base sm:text-lg font-mono hover:text-white transition-colors cursor-pointer flex items-center justify-center gap-2 sm:gap-3 px-4 py-2 hover:bg-gray-900/30 rounded-none border border-transparent hover:border-gray-700"
-              onClick={() => copyToClipboard("npm install -g flux-cli", "bottom-install")}
-            >
-              {copiedStates["bottom-install"] ? (
-                <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-400 flex-shrink-0" />
-              ) : (
-                <Copy className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 hover:text-white transition-colors flex-shrink-0" />
-              )}
-              <span className="break-all sm:break-normal">$ npm install -g flux-cli</span>
+            <div className="text-gray-400 text-base sm:text-lg font-mono flex items-center justify-center gap-2 sm:gap-3 px-4 py-2">
+              <span className="text-green-400 animate-pulse">●</span>
+              <span>Сервер работает 24/7 — Без лагов — Дружное сообщество</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-800 px-6 py-12 lg:px-12 bg-gray-950">
+      <footer className="border-t border-gray-800 px-6 py-12 lg:px-12">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center">
-            <div className="text-gray-600 text-lg mb-4">Создано разработчиками для разработчиков.</div>
-            <div className="text-gray-700 text-sm">FLUX CLI. Деплой быстрее. Код лучше.</div>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-white font-bold text-xl">МАТ</span>
+                <span className="text-red-400 font-bold text-xl">&</span>
+                <span className="text-white font-bold text-xl">РЕШКА</span>
+              </div>
+              <p className="text-gray-500 text-sm max-w-xs">
+                Легендарный игровой сервер для настоящих бойцов.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-8 text-sm">
+              <div>
+                <h4 className="text-white font-bold mb-3">Сервер</h4>
+                <div className="space-y-2 text-gray-500">
+                  <div>О сервере</div>
+                  <div>Режимы игры</div>
+                  <div>Правила</div>
+                </div>
+              </div>
+              <div>
+                <h4 className="text-white font-bold mb-3">Сообщество</h4>
+                <div className="space-y-2 text-gray-500">
+                  <div>Discord</div>
+                  <div>ВКонтакте</div>
+                  <div>Telegram</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="text-gray-600 text-sm font-mono">
+              © 2024 МАТ&РЕШКА. Все права защищены.
+            </div>
+            <div className="flex items-center gap-2 text-gray-600 text-xs font-mono">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span>player@mat-reshka:~$ █</span>
+            </div>
           </div>
         </div>
       </footer>
