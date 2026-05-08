@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
-// Пиксельная матрёшка 11x16 (большая)
+// Большая матрёшка 11x16
 const BIG: number[][] = [
   [0,0,1,1,1,1,1,1,1,0,0],
   [0,1,1,2,2,2,2,2,1,1,0],
@@ -21,8 +21,8 @@ const BIG: number[][] = [
   [0,0,1,1,1,1,1,1,1,0,0],
 ]
 
-// Пиксельная матрёшка 7x10 (маленькая)
-const SMALL: number[][] = [
+// Средняя матрёшка 7x10
+const MED: number[][] = [
   [0,1,1,1,1,1,0],
   [1,2,2,2,2,2,1],
   [1,2,3,2,3,2,1],
@@ -35,14 +35,26 @@ const SMALL: number[][] = [
   [0,1,1,1,1,1,0],
 ]
 
+// Маленькая матрёшка 5x8
+const TINY: number[][] = [
+  [0,1,1,1,0],
+  [1,2,2,2,1],
+  [1,3,2,3,1],
+  [1,1,4,1,1],
+  [0,1,5,1,0],
+  [0,1,6,1,0],
+  [0,1,5,1,0],
+  [0,1,1,1,0],
+]
+
 const COLORS: Record<number, string> = {
   0: "transparent",
-  1: "#7c2d12", // тёмно-красный контур
-  2: "#fca5a5", // телесный
-  3: "#1e3a5f", // глаза
-  4: "#ef4444", // рот/нос
-  5: "#dc2626", // тело красное
-  6: "#facc15", // узор золотой
+  1: "#7c2d12",
+  2: "#fca5a5",
+  3: "#1e3a5f",
+  4: "#ef4444",
+  5: "#dc2626",
+  6: "#facc15",
 }
 
 function PixelGrid({ grid, pixelSize }: { grid: number[][], pixelSize: number }) {
@@ -51,14 +63,7 @@ function PixelGrid({ grid, pixelSize }: { grid: number[][], pixelSize: number })
       {grid.map((row, y) => (
         <div key={y} style={{ display: "flex" }}>
           {row.map((cell, x) => (
-            <div
-              key={x}
-              style={{
-                width: pixelSize,
-                height: pixelSize,
-                backgroundColor: COLORS[cell],
-              }}
-            />
+            <div key={x} style={{ width: pixelSize, height: pixelSize, backgroundColor: COLORS[cell] }} />
           ))}
         </div>
       ))}
@@ -66,38 +71,92 @@ function PixelGrid({ grid, pixelSize }: { grid: number[][], pixelSize: number })
   )
 }
 
+// Одна сцена: большая матрёшка + вылетающая из неё маленькая → летит влево/вправо
+function MatryoshkaScene({
+  popGrid,
+  popPixel,
+  flyTo,        // куда улетает по X (px)
+  trigger,      // когда начинать анимацию
+}: {
+  popGrid: number[][]
+  popPixel: number
+  flyTo: number
+  trigger: boolean
+}) {
+  const BIG_PX = 8
+  const bigH = BIG.length * BIG_PX
+  const bigW = BIG[0].length * BIG_PX
+  const popH = popGrid.length * popPixel
+  const popW = popGrid[0].length * popPixel
+
+  const [popY, setPopY] = useState(bigH * 0.4)
+  const [popX, setPopX] = useState(0)
+  const [opacity, setOpacity] = useState(0)
+
+  useEffect(() => {
+    if (!trigger) {
+      setPopY(bigH * 0.4)
+      setPopX(0)
+      setOpacity(0)
+      return
+    }
+    // появляется
+    setOpacity(1)
+    // вылетает вверх
+    const t1 = setTimeout(() => setPopY(-popH - 10), 50)
+    // улетает в сторону
+    const t2 = setTimeout(() => setPopX(flyTo), 500)
+    // исчезает
+    const t3 = setTimeout(() => setOpacity(0), 900)
+
+    return () => [t1, t2, t3].forEach(clearTimeout)
+  }, [trigger])
+
+  return (
+    <div style={{ position: "relative", width: bigW, height: bigH + 10, display: "inline-block" }}>
+      {/* Большая матрёшка */}
+      <PixelGrid grid={BIG} pixelSize={BIG_PX} />
+
+      {/* Вылетающая маленькая */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: bigH * 0.42,
+          left: (bigW - popW) / 2 + popX,
+          top: popY,
+          opacity,
+          transition: trigger
+            ? "top 0.45s cubic-bezier(0.34,1.56,0.64,1), left 0.5s ease-in 0.45s, opacity 0.3s ease 0.85s"
+            : "none",
+          zIndex: 10,
+        }}
+      >
+        <PixelGrid grid={popGrid} pixelSize={popPixel} />
+      </div>
+    </div>
+  )
+}
+
+const CYCLE = 5000 // полный цикл мс
+const STAGGER = 900  // задержка между матрёшками
+
 export default function Mods() {
-  const [phase, setPhase] = useState<"closed" | "opening" | "open" | "peek" | "out">("closed")
-  const [smallY, setSmallY] = useState(100)
+  const [tick, setTick] = useState(0)
+  const [triggers, setTriggers] = useState([false, false, false])
 
   useEffect(() => {
-    // Последовательность анимации
-    const t1 = setTimeout(() => setPhase("opening"), 600)
-    const t2 = setTimeout(() => { setPhase("open"); setSmallY(60) }, 1200)
-    const t3 = setTimeout(() => { setPhase("peek"); setSmallY(20) }, 1900)
-    const t4 = setTimeout(() => { setPhase("out"); setSmallY(-110) }, 2700)
-    // Повтор через паузу
-    const t5 = setTimeout(() => {
-      setPhase("closed")
-      setSmallY(100)
-    }, 4500)
+    const interval = setInterval(() => setTick((t) => t + 1), CYCLE)
+    return () => clearInterval(interval)
+  }, [])
 
-    return () => [t1, t2, t3, t4, t5].forEach(clearTimeout)
-  }, [phase === "closed" ? phase : ""])
-
-  // Перезапуск цикла
   useEffect(() => {
-    if (phase !== "closed") return
-    const t = setTimeout(() => setPhase("opening"), 600)
-    return () => clearTimeout(t)
-  }, [phase])
-
-  const bigPixel = 10
-  const smallPixel = 6
-
-  const bigH = BIG.length * bigPixel
-  const bigW = BIG[0].length * bigPixel
-  const smallH = SMALL.length * smallPixel
+    // запускаем по очереди: 0 → 1 → 2
+    setTriggers([false, false, false])
+    const t0 = setTimeout(() => setTriggers(([, b, c]) => [true, b, c]), 200)
+    const t1 = setTimeout(() => setTriggers(([a, , c]) => [a, true, c]), 200 + STAGGER)
+    const t2 = setTimeout(() => setTriggers(([a, b]) => [a, b, true]), 200 + STAGGER * 2)
+    return () => [t0, t1, t2].forEach(clearTimeout)
+  }, [tick])
 
   return (
     <div className="min-h-screen bg-black text-white font-mono">
@@ -142,46 +201,14 @@ export default function Mods() {
       <section className="px-6 py-24 lg:px-12 flex flex-col items-center justify-center min-h-[80vh]">
         <div className="text-center">
 
-          {/* Пиксельная анимация */}
-          <div
-            className="relative mx-auto mb-12 flex items-end justify-center"
-            style={{ width: bigW, height: bigH + 20 }}
-          >
-            {/* Большая матрёшка — нижняя половина как «чаша» */}
-            <div style={{ position: "absolute", bottom: 0, left: 0 }}>
-              <PixelGrid grid={BIG} pixelSize={bigPixel} />
-            </div>
-
-            {/* Маленькая матрёшка вылезает из большой */}
-            <div
-              style={{
-                position: "absolute",
-                left: "50%",
-                transform: "translateX(-50%)",
-                bottom: `${bigH * 0.42}px`,
-                transition: "top 0.7s cubic-bezier(0.34,1.56,0.64,1)",
-                top: `${smallY}%`,
-                zIndex: 10,
-              }}
-            >
-              <PixelGrid grid={SMALL} pixelSize={smallPixel} />
-            </div>
-
-            {/* Верхняя половина большой матрёшки — перекрывает маленькую пока та внутри */}
-            <div
-              style={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                clipPath: phase === "closed" || phase === "opening"
-                  ? `inset(0 0 ${bigH * 0.42}px 0)`
-                  : `inset(0 0 ${bigH * 0.55}px 0)`,
-                transition: "clip-path 0.6s ease",
-                zIndex: 20,
-              }}
-            >
-              <PixelGrid grid={BIG} pixelSize={bigPixel} />
-            </div>
+          {/* Три матрёшки в ряд */}
+          <div className="flex items-end justify-center gap-10 mb-14" style={{ minHeight: 160 }}>
+            {/* Левая — маленькая вылетает влево */}
+            <MatryoshkaScene popGrid={TINY} popPixel={5} flyTo={-80} trigger={triggers[0]} />
+            {/* Центральная — средняя вылетает вверх */}
+            <MatryoshkaScene popGrid={MED}  popPixel={6} flyTo={0}   trigger={triggers[1]} />
+            {/* Правая — маленькая вылетает вправо */}
+            <MatryoshkaScene popGrid={TINY} popPixel={5} flyTo={80}  trigger={triggers[2]} />
           </div>
 
           <div className="text-red-400 font-mono text-sm mb-4 tracking-widest uppercase">// в разработке</div>
@@ -190,7 +217,6 @@ export default function Mods() {
             Мы собираем лучшие моды специально для нашего сервера. Скоро здесь появится полный список с описаниями.
           </p>
 
-          {/* Terminal-style progress */}
           <div className="bg-gray-950 border border-gray-800 p-6 max-w-md mx-auto text-left mb-10">
             <div className="text-gray-500 text-xs mb-3">$ /mods --status</div>
             <div className="space-y-2 text-sm">
