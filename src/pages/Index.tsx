@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Copy, Check } from "lucide-react"
+import { Copy, Check, ArrowUp } from "lucide-react"
 import { Link } from "react-router-dom"
 
 export default function Index() {
@@ -10,6 +10,13 @@ export default function Index() {
   const [currentTyping, setCurrentTyping] = useState("")
   const [isExecuting, setIsExecuting] = useState(false)
   const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>({})
+  const [showScrollTop, setShowScrollTop] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setShowScrollTop(window.scrollY > 400)
+    window.addEventListener("scroll", onScroll)
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
 
   const copyToClipboard = async (text: string, key: string) => {
     try {
@@ -758,6 +765,15 @@ export default function Index() {
           </div>
         </div>
       </footer>
+      {/* Scroll to top button */}
+      {showScrollTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-6 right-6 z-50 group border border-red-500 bg-black p-3 hover:bg-red-500 transition-all duration-300 shadow-lg shadow-red-500/20"
+        >
+          <ArrowUp className="w-5 h-5 text-red-400 group-hover:text-white transition-colors" />
+        </button>
+      )}
     </div>
   )
 }
